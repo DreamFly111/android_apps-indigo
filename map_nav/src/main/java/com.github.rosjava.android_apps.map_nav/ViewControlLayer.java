@@ -139,7 +139,7 @@ public class ViewControlLayer extends CameraControlLayer {
         mapViewParent.removeView(mapView);
         cameraViewParent.removeView(cameraView);
 
-        //-----------removeView-----------
+        //-----------removeView自写-----------
         cameraViewParent.removeView(mapView);
         mapViewParent.removeView(cameraView);
 

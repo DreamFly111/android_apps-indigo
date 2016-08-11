@@ -157,14 +157,14 @@ public class MainActivity extends RosAppActivity {
         mapPosePublisherLayer = new com.github.rosjava.android_apps.map_nav.MapPosePublisherLayer(this, appNameSpace, params, remaps);
         com.github.rosjava.android_apps.map_nav.InitialPoseSubscriberLayer initialPoseSubscriberLayer =
                 new com.github.rosjava.android_apps.map_nav.InitialPoseSubscriberLayer(appNameSpace.resolve(initTopic).toString(), robotFrame);
-		robotLayer = new RobotLayer(robotFrame);
+		robotLayer = new RobotLayer(appNameSpace.resolve(robotFrame).toString());
 
-        mapView.addLayer(viewControlLayer);
-        mapView.addLayer(occupancyGridLayer);
-        mapView.addLayer(laserScanLayer);
-        mapView.addLayer(pathLayer);
+        mapView.addLayer(viewControlLayer);//导致崩溃
+        mapView.addLayer(occupancyGridLayer);//显示地图
+        mapView.addLayer(laserScanLayer);//无影响
+        mapView.addLayer(pathLayer);//---自动导航路线
         mapView.addLayer(mapPosePublisherLayer);
-        mapView.addLayer(initialPoseSubscriberLayer);
+        mapView.addLayer(initialPoseSubscriberLayer);//初始化map,没有影响
 		mapView.addLayer(robotLayer);
 
         mapView.init(nodeMainExecutor);
@@ -187,11 +187,11 @@ public class MainActivity extends RosAppActivity {
 //		nodeConfiguration.setTimeProvider(ntpTimeProvider);
 		nodeMainExecutor.execute(mapView, nodeConfiguration.setNodeName("android/map_view"));
 
-		readAvailableMapList();
+//		readAvailableMapList();//-------去除自动加载的dialog
 	}
 
 	private void onChooseMapButtonPressed() {
-		readAvailableMapList();
+//		readAvailableMapList();//----------关闭选择地图效果
 	}
 
 	public void setPoseClicked(View view) {
@@ -211,12 +211,12 @@ public class MainActivity extends RosAppActivity {
 	}
 
 	private void readAvailableMapList() {
-//		safeShowWaitingDialog("Waiting...", "Waiting for map list");--------注掉看效果
+//		safeShowWaitingDialog("Waiting...", "Waiting for map list");//--------注掉看效果
 
         com.github.rosjava.android_apps.map_nav.MapManager mapManager = new com.github.rosjava.android_apps.map_nav.MapManager(this, remaps);
         mapManager.setNameResolver(getMasterNameSpace());
 		mapManager.setFunction("list");
-//		safeShowWaitingDialog("Waiting...", "Waiting for map list");
+		safeShowWaitingDialog("Waiting...", "Waiting for map list");
 		mapManager.setListService(new ServiceResponseListener<ListMapsResponse>() {
 					@Override
 					public void onSuccess(ListMapsResponse message) {
