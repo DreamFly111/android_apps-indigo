@@ -139,11 +139,6 @@ public class ViewControlLayer extends CameraControlLayer {
         mapViewParent.removeView(mapView);
         cameraViewParent.removeView(cameraView);
 
-        //-----------removeView自写-----------
-        cameraViewParent.removeView(mapView);
-        mapViewParent.removeView(cameraView);
-
-
         // Add them to their new location...
         mapViewParent.addView(cameraView, mapViewIndex);
         cameraViewParent.addView(mapView, cameraViewIndex);
